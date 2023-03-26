@@ -1,0 +1,28 @@
+# Generated with GPT-4
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+*.egg
+
+# JavaScript
+node_modules/
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+package-lock.json
+yarn.lock
+
+# General
+.DS_Store
+*.log
+*.swp
+*.bak
+*.tmp
+*.orig
+*~
