@@ -6,7 +6,8 @@ from langchain.llms.base import LLM
 from langchain import LLMChain, PromptTemplate
 from langchain.schema import BaseLanguageModel
 
-from templates import WRITEMORE_DESCRIPTION, CONTENT_ROADMAP_TEMPLATE, CONTENT_TEMPLATE
+from writemore.templates import (WRITEMORE_DESCRIPTION,
+                                 CONTENT_ROADMAP_TEMPLATE, CONTENT_TEMPLATE)
 
 logger = logging.getLogger(__name__)
 
