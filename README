@@ -1,0 +1,47 @@
+# writemore
+
+A library of customizable autonomous agents for common jobs.
+
+## Requirements
+
+- `python 3.8` or later
+- OpenAI API key
+
+
+## Installation
+
+Make sure you have all the **requirements** above, if not, install/get them.
+
+*The following commands should be executed in a CMD, Bash or Powershell window. To do this, go to a folder on your computer, click in the folder path at the top and type CMD, then press enter.*
+
+Clone the repository:
+
+```bash
+git clone https://github.com/Torantulino/Auto-GPT.git
+```
+
+Navigate to the project directory:
+
+```bash
+cd 'Auto-GPT'
+```
+
+Install the requirements (we recommend using a virtual environment like `conda`):
+
+```bash
+pip install -r requirements.txt
+```
+
+Rename `.env.template` to `.env` and fill in your `OPENAI_API_KEY` from the [OpenAI dashboard](https://platform.openai.com/account/api-keys).
+
+## Usage
+
+Run the `cli.py` python script in your terminal:
+*(Type this into your CMD window)*
+
+```bash
+python cli.py
+```
+
+1. After each of AUTO-GPT's actions, type "NEXT COMMAND" to authorise them to continue.
+2. To exit the program, type "exit" and press Enter.
