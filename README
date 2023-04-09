@@ -43,5 +43,21 @@ Run the `cli.py` python script in your terminal:
 python cli.py
 ```
 
-1. After each of AUTO-GPT's actions, type "NEXT COMMAND" to authorise them to continue.
-2. To exit the program, type "exit" and press Enter.
+## Contributing
+
+### Create conda environment:
+
+```bash
+conda create -n writemore python=3.8
+conda activate writemore
+```
+
+writemore uses `pre-commit` to run code checks and tests before every commit. To install the pre-commit hooks, run the following commands:
+
+```bash
+pip install pre-commit
+pre-commit install
+```
+
+## Development Roadmap
+
