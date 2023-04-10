@@ -27,11 +27,12 @@ python cli.py
 
 ## Contributing
 
-### Create conda environment
+Create conda environment and install dev requirements
 
 ```bash
 conda create -n writemore python=3.8
 conda activate writemore
+pip install -r requirements-dev.txt
 ```
 
 writemore uses `pre-commit` to run code checks and tests before every commit. To install the pre-commit hooks, run the following commands:
