@@ -18,12 +18,10 @@ def main(verbose: bool):
             prompt="Enter your OpenAI API key: "
         )
     if not os.environ.get("OBJECTIVE"):
-        os.environ["OBJECTIVE"] = getpass.getpass(
-            prompt="Describe your objective for the AI: "
-        )
+        os.environ["OBJECTIVE"] = click.prompt("Describe your objective for the AI")
     if not os.environ.get("TASK"):
-        os.environ["TASK"] = getpass.getpass(
-            prompt="Describe the first task to be executed towards the objective: "
+        os.environ["TASK"] = click.prompt(
+            "Describe the first task to be executed towards the objective: "
         )
     objective, task = os.environ.get("OBJECTIVE"), os.environ.get("TASK")
 
