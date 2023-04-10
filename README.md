@@ -14,19 +14,7 @@ Make sure you have all the **requirements** above, if not, install/get them.
 
 *The following commands should be executed in a CMD, Bash or Powershell window. To do this, go to a folder on your computer, click in the folder path at the top and type CMD, then press enter.*
 
-Clone the repository:
-
-```bash
-git clone https://github.com/Torantulino/Auto-GPT.git
-```
-
-Navigate to the project directory:
-
-```bash
-cd 'Auto-GPT'
-```
-
-Install the requirements (we recommend using a virtual environment like `conda`):
+Clone the repository and install the requirements (we recommend using a virtual environment like `conda`):
 
 ```bash
 pip install -r requirements.txt
