@@ -45,6 +45,8 @@ pre-commit install
 
 ToDos
 
+- [ ] Add memory, expose at least one local and one thirt party API
+- [ ] Expose all LangChain LLM models available
 - [ ] Add at least 5 template examples
 - [ ] Interactive mode
 - [ ] Localhost web-ui
