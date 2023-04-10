@@ -1,17 +1,14 @@
 CREATE_NEW_TASKS_TEMPLATE = """
-    You must create new tasks with the following objective: {objective},
-    The last completed task has this result: {result}
-    The last completed task was based on this description: {task_description}.
-    These are incomplete tasks: {task_list}.
-    Based on the result, return in a comma separated list of no
-    more than {n_tasks} tasks to be completed.
-    They must not overlap with incomplete tasks.
+    You must create at most {n_tasks} tasks with the following objective: {objective},
+    The last completed task has was {task_description} with this result: {result}
+    These are incomplete tasks: {task_list} and new tasks must not overlap.
+    Return the tasks in a comma separated list, like: task1, task2, task3, ...
     """
 
 RESCHEDULE_TEMPLATE = """
     You are tasked with prioritizing the following tasks: {task_list}.
     Consider the ultimate objective of these tasks: {objective}.
-    Reorder in a comma separated list these tasks, in order of priority.
+    Return the tasks in a comma separated list, like: task1, task2, task3, ...
     Clean formatting of the text. Do not remove any task.
     """
 

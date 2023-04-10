@@ -30,20 +30,19 @@ class Executor:
         )
         self.chain = LLMChain(prompt=prompt, llm=self.llm, verbose=VERBOSE)
         response = self.chain.run(objective=self.objective, task=task)
-        print(response)
         return response
 
 
 class Scheduler:
     def __init__(self, objective, first_task, memory, llm):
         self.objective = objective
-        # self.memory = memory
+        self.memory = memory
         self.llm = llm
         self.task_list = deque([first_task])
         self.output_parser = CommaSeparatedListOutputParser()
 
     def next_task(self):
-        self.task_list.popleft()
+        return self.task_list.popleft()
 
     def add(self, task):
         self.task_list.append(task)
@@ -69,7 +68,6 @@ class Scheduler:
             task_list={", ".join([str(t) for t in self.task_list])},
             n_tasks=5,
         )
-        print(response)
         new_tasks = self.output_parser.parse(response)
         self.task_list.extend(new_tasks)
         return self.task_list
@@ -87,7 +85,6 @@ class Scheduler:
             task_list={", ".join([str(t) for t in self.task_list])},
         )
 
-        print(response)
         self.task_list = deque()
         new_tasks = self.output_parser.parse(response)
         self.task_list.extend(new_tasks)
@@ -105,9 +102,9 @@ class Scheduler:
 
 def writemore(objective, task, verbose):
     if verbose:
-        pass
+        VERBOSE = True
 
-    llm = ChatOpenAI(temperature=0, max_tokens=500)
+    llm = ChatOpenAI(temperature=0, max_tokens=500, verbose=VERBOSE)
     # memory = Memory()
     memory = []
     scheduler = Scheduler(objective, task, memory, llm)
@@ -115,12 +112,17 @@ def writemore(objective, task, verbose):
 
     iter, max_iter = 0, 5
     while scheduler.task_list or iter >= max_iter:
-        print(f"Iter {iter}. \nCurrent task list: {scheduler.task_list}")
+        print(f"\n****Iter {iter}. Current task list****")
+        for t in scheduler.task_list:
+            print(str(t))
 
         task = scheduler.next_task()
+        print("\n****Next task****\n")
+        print(task)
         result = executor.run(task)
-        memory.append(result)
-        print(f"Task: {task} \nResult: {result}")
+        # memory.append(result)
+        print("\n****Task result****\n")
+        print(result)
 
         new_tasks = scheduler.create_new_tasks()
 
