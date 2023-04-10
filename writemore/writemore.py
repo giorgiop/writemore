@@ -1,90 +1,131 @@
-import logging
-from pathlib import Path
+from collections import deque
 
-from langchain.chat_models import ChatOpenAI
-from langchain.llms.base import LLM
 from langchain import LLMChain, PromptTemplate
-from langchain.schema import BaseLanguageModel
+from langchain.chat_models import ChatOpenAI
+from langchain.output_parsers import CommaSeparatedListOutputParser
 
-from writemore.templates import (WRITEMORE_DESCRIPTION,
-                                 CONTENT_ROADMAP_TEMPLATE, CONTENT_TEMPLATE)
+from writemore.templates import (
+    CREATE_NEW_TASKS_TEMPLATE,
+    EXECUTION_TEMPLATE,
+    RESCHEDULE_TEMPLATE,
+)
 
-logger = logging.getLogger(__name__)
-
-
-def load_content_roadmap_chain(llm: BaseLanguageModel, verbose: bool = False):
-    """Loads the content roadmap chain."""
-    prompt = PromptTemplate(
-        template=CONTENT_ROADMAP_TEMPLATE,
-        input_variables=["writemore_project"],
-        partial_variables={"writemore_description": WRITEMORE_DESCRIPTION},
-    )
-    return LLMChain(prompt=prompt, llm=llm, verbose=verbose)
+VERBOSE = False
 
 
-def load_content_chain(llm: BaseLanguageModel, verbose: bool = False):
-    """Loads the content chain."""
-    prompt = PromptTemplate(
-        template=CONTENT_TEMPLATE,
-        input_variables=["writemore_project", "content_roadmap", "content_element"],
-        partial_variables={
-            "writemore_description": WRITEMORE_DESCRIPTION,
-        },
-    )
-    return LLMChain(prompt=prompt, llm=llm, verbose=verbose)
+class Executor:
+    def __init__(self, objective, memory, llm):
+        self.objective = objective
+        # self.memory = memory
+        self.llm = llm
 
+    def run(self, task):
+        """Call LLM to execute the task"""
 
-class Writer:
-    """The Writer is in charge of writing new content"""
+        # context = context_agent(query=objective, n=5)
 
-    def __init__(self, prompt: str, output_path: str,
-                 llm: LLM, verbose: bool) -> None:
-        """Constructor.
-        Args:
-            prompt: a description of the project topic or idea
-            output_path: The output path for the generated project template.
-        """
-        self.prompt = prompt
-        self.output_path = output_path
-        self.verbose = verbose
-
-        if not llm:
-            self.llm = ChatOpenAI(temperature=0, max_tokens=2048)
-        else:
-            self.llm = llm
-
-        self.content_roadmap_chain = load_content_roadmap_chain(
-            self.llm, self.verbose
+        prompt = PromptTemplate(
+            template=EXECUTION_TEMPLATE,
+            input_variables=["objective", "task"],
         )
-        self.content_chain = load_content_chain(llm=self.llm, verbose=self.verbose)
+        self.chain = LLMChain(prompt=prompt, llm=self.llm, verbose=VERBOSE)
+        response = self.chain.run(objective=self.objective, task=task)
+        print(response)
+        return response
 
-    def generate_content_roadmap(self) -> None:
-        """Generates the content roadmap."""
-        logger.info("Generating content roadmap...")
-        self.roadmap_content_str = \
-            self.content_roadmap_chain.predict(writemore_project=self.prompt)
-        self.write_file("roadmap.txt", self.roadmap_content_str.strip())
 
-    def generate_content_element(self, step: int) -> None:
-        """Generates one element of content."""
+class Scheduler:
+    def __init__(self, objective, first_task, memory, llm):
+        self.objective = objective
+        # self.memory = memory
+        self.llm = llm
+        self.task_list = deque([first_task])
+        self.output_parser = CommaSeparatedListOutputParser()
 
-        content_roadmap_str = self.read_file("roadmap.txt")
-        file_name = f"content_{step}.txt"
-        logger.info(f"Generating content: {file_name}...")
-        content = self.content_chain.predict(
-            writemore_project=self.prompt,
-            content_roadmap=content_roadmap_str,
-            content_element=step,
+    def next_task(self):
+        self.task_list.popleft()
+
+    def add(self, task):
+        self.task_list.append(task)
+
+    def create_new_tasks(self):
+        """Check task_list. Call LLM to decide if new tasks must be added"""
+
+        prompt = PromptTemplate(
+            template=CREATE_NEW_TASKS_TEMPLATE,
+            input_variables=[
+                "objective",
+                "result",
+                "task_description",
+                "task_list",
+                "n_tasks",
+            ],
         )
-        self.write_file(file_name, content)
+        self.chain = LLMChain(prompt=prompt, llm=self.llm, verbose=VERBOSE)
+        response = self.chain.run(
+            objective=self.objective,
+            result="None",
+            task_description="None",
+            task_list={", ".join([str(t) for t in self.task_list])},
+            n_tasks=5,
+        )
+        print(response)
+        new_tasks = self.output_parser.parse(response)
+        self.task_list.extend(new_tasks)
+        return self.task_list
 
-    def read_file(self, file_name: str) -> str:
-        """Read the file from the output path."""
-        file_path = Path(self.output_path) / file_name
-        return file_path.read_text()
+    def reschedule(self):
+        """Check task_list. Call LLM to decide if task priority is ok"""
 
-    def write_file(self, file_name: str, file_content: str):
-        """Writes the file to the output path."""
-        file_path = Path(self.output_path) / file_name
-        file_path.parent.mkdir(parents=True, exist_ok=True)
-        file_path.write_text(file_content)
+        prompt = PromptTemplate(
+            template=RESCHEDULE_TEMPLATE,
+            input_variables=["objective", "task_list"],
+        )
+        self.chain = LLMChain(prompt=prompt, llm=self.llm, verbose=VERBOSE)
+        response = self.chain.run(
+            objective=self.objective,
+            task_list={", ".join([str(t) for t in self.task_list])},
+        )
+
+        print(response)
+        self.task_list = deque()
+        new_tasks = self.output_parser.parse(response)
+        self.task_list.extend(new_tasks)
+        return self.task_list
+
+
+# class Memory():
+
+#     def __init__(self, objective):
+#         self.objective = objective
+
+#     def fetch_context(self, n):
+#         context = context_agent(query=self.objective, n=n)
+
+
+def writemore(objective, task, verbose):
+    if verbose:
+        pass
+
+    llm = ChatOpenAI(temperature=0, max_tokens=500)
+    # memory = Memory()
+    memory = []
+    scheduler = Scheduler(objective, task, memory, llm)
+    executor = Executor(objective, memory, llm)
+
+    iter, max_iter = 0, 5
+    while scheduler.task_list or iter >= max_iter:
+        print(f"Iter {iter}. \nCurrent task list: {scheduler.task_list}")
+
+        task = scheduler.next_task()
+        result = executor.run(task)
+        memory.append(result)
+        print(f"Task: {task} \nResult: {result}")
+
+        new_tasks = scheduler.create_new_tasks()
+
+        if new_tasks:
+            scheduler.add(new_tasks)
+            scheduler.reschedule()
+
+        iter += 1

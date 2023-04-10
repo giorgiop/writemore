@@ -1,31 +1,21 @@
-WRITEMORE_DESCRIPTION = """
-Your task is to write content on a topic descibed by the Writemore project.
-"""
+CREATE_NEW_TASKS_TEMPLATE = """
+    You must create new tasks with the following objective: {objective},
+    The last completed task has this result: {result}
+    The last completed task was based on this description: {task_description}.
+    These are incomplete tasks: {task_list}.
+    Based on the result, return in a comma separated list of no
+    more than {n_tasks} tasks to be completed.
+    They must not overlap with incomplete tasks.
+    """
 
-CONTENT_ROADMAP_TEMPLATE = template = """{writemore_description}
+RESCHEDULE_TEMPLATE = """
+    You are tasked with prioritizing the following tasks: {task_list}.
+    Consider the ultimate objective of these tasks: {objective}.
+    Reorder in a comma separated list these tasks, in order of priority.
+    Clean formatting of the text. Do not remove any task.
+    """
 
-Create a content roadmap. The roadmap is a list of 10 elements,
-all coherently organized to fullfill the Writemore project.
-Each element is a paragraph of 3-6 sentences.
-The content roadmap must be formatted in a numberest list,
-with each element separated by 2 newlines.
-
-You must be clear and concise.
-
-Writemore project: {writemore_project}
-Content roadmap:
-"""
-
-CONTENT_TEMPLATE = """{writemore_description}
-
-Writemore project: {writemore_project}
-
-Content roadmap:
-{content_roadmap}
-
-You have to create new content based on the content roadmap.
-ONLY create content for the content element specified below.
-Content length should be in ball park of 500 words.
-
-Content element: write chatper {content_element}
-Content:"""
+EXECUTION_TEMPLATE = """
+    You must perform one task based on the following objective: {objective}\n.
+    Take into account these previously completed tasks: NOTHING\n.
+    Your task: {task}\nResponse:"""
