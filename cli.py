@@ -18,7 +18,7 @@ def main(verbose: bool):
         os.environ["OBJECTIVE"] = click.prompt("Describe your objective for the AI")
     if not os.environ.get("FIRST_TASK"):
         os.environ["FIRST_TASK"] = click.prompt(
-            "Describe the first task to be executed towards the objective: "
+            "Describe the first task to be executed towards the objective"
         )
     objective, first_task = os.environ.get("OBJECTIVE"), os.environ.get("FIRST_TASK")
 
