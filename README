@@ -45,7 +45,7 @@ python cli.py
 
 ## Contributing
 
-### Create conda environment:
+### Create conda environment
 
 ```bash
 conda create -n writemore python=3.8

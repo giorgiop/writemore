@@ -56,7 +56,7 @@ class Writer:
         self.content_roadmap_chain = load_content_roadmap_chain(
             self.llm, self.verbose
         )
-        self.content_chain = load_content_chain(self.llm, self.verbose)
+        self.content_chain = load_content_chain(llm=self.llm, verbose=self.verbose)
 
     def generate_content_roadmap(self) -> None:
         """Generates the content roadmap."""

@@ -1,6 +1,10 @@
 import os
 import logging
 import getpass
+from dotenv import load_dotenv
+
+# Load default environment variables (.env)
+load_dotenv()
 
 import click
 
@@ -31,7 +35,7 @@ def main(prompt: str, output_path: str, verbose: bool):
     logger.info(f"Generating content for '{prompt}' at '{output_path}'")
 
     generator = Writer(
-        prompt=prompt, output_path=output_path, verbose=verbose
+        prompt=prompt, llm=None, output_path=output_path, verbose=verbose
     )
     generator.generate_content_roadmap()
 
