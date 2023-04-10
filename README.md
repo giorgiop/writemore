@@ -2,12 +2,6 @@
 
 A library of customizable autonomous agents for common jobs.
 
-## Requirements
-
-- `python 3.8` or later
-- OpenAI API key
-
-
 ## Installation
 
 Make sure you have all the **requirements** above, if not, install/get them.
@@ -49,9 +43,9 @@ pre-commit install
 
 ## Development Roadmap
 
-ToDo
+ToDos
 
-- [] Add at least 5 template examples
-- [] Interactive mode
-- [] Localhost web-ui
-- [] Privacy-preserving on-premise workflow (not third party APIs)
+- [ ] Add at least 5 template examples
+- [ ] Interactive mode
+- [ ] Localhost web-ui
+- [ ] Privacy-preserving on-premise workflow (not third party APIs)
