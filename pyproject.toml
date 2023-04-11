@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "writemore"
+version = "0.1.0"
+description = ""
+authors = ["Giorgio Patrini"]
+readme = "README.md"
+packages = [{include = "writemore"}]
+
+[tool.poetry.scripts]
+writemore = "writemore.cli:run"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+click = "8.1.3"
+langchain = "0.0.135"
+openai = "0.27.2"
+tiktoken = "^0.3.3"
+pydantic = "^1.10.7"
+
+
+[tool.poetry.group.dev]
+optional = true
+
+[tool.poetry.group.dev.dependencies]
+pytest = {version = "^7.3.0"}
+pre-commit = {version = "^3.2.2"}
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
