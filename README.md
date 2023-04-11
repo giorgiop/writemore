@@ -2,6 +2,7 @@
 
 A library of customizable autonomous agents for common jobs.
 
+
 ## Installation
 
 Make sure you have all the **requirements** above, if not, install/get them.
@@ -48,7 +49,7 @@ ToDos
 
 - [ ] Add memory, expose at least one local and one thirt party API
 - [ ] Expose all LangChain LLM models available
-- [ ] Add at least 5 template examples
+- [ ] Add at least 5 jobs, as for example: conduct market research, write an engaging linkedin, prove a simple theorem
 - [ ] Interactive mode
 - [ ] Localhost web-ui
 - [ ] Privacy-preserving on-premise workflow (not third party APIs)
