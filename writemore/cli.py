@@ -1,5 +1,3 @@
-import getpass
-import os
 from typing import Optional
 
 import click
@@ -19,7 +17,13 @@ settings = WriteMoreCLISettings()
 
 
 @click.command()
-@click.option("-o", "--objective", help="High level objective", prompt=True, default=lambda: settings.OBJECTIVE)
+@click.option(
+    "-o",
+    "--objective",
+    help="High level objective",
+    prompt=True,
+    default=lambda: settings.OBJECTIVE,
+)
 @click.option("-t", "--task", help="Task", prompt=True, default=lambda: settings.TASK)
 @click.option("-v", "--verbose", is_flag=True, help="Run in verbose mode.")
 def main(objective: str, task: str, verbose: bool):

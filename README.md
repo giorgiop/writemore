@@ -8,38 +8,38 @@ Make sure you have all the **requirements** above, if not, install/get them.
 
 *The following commands should be executed in a CMD, Bash or Powershell window. To do this, go to a folder on your computer, click in the folder path at the top and type CMD, then press enter.*
 
-Clone the repository and install the requirements (we recommend using a virtual environment like `conda`):
+Clone the repository and install the requirements (we recommend using a Python virtual environment):
 
 ```bash
-pip install -r requirements.txt
+pip install writemore
 ```
 
-Rename `.env.template` to `.env` and fill in your `OPENAI_API_KEY` from the [OpenAI dashboard](https://platform.openai.com/account/api-keys).
+The library requires the `OPENAI_API_KEY` environment variable to be set with an api key obtained from
+the [OpenAI dashboard](https://platform.openai.com/account/api-keys).
+
 
 ## Usage
 
-Run the `cli.py` python script in your terminal:
+Run the command line application python script in your terminal:
 *(Type this into your CMD window)*
 
 ```bash
-python cli.py
+python -m writemore.cli
 ```
 
 ## Contributing
 
-Create conda environment and install dev requirements
-
-```bash
-conda create -n writemore python=3.8
-conda activate writemore
-pip install -r requirements-dev.txt
-```
-
 writemore uses `pre-commit` to run code checks and tests before every commit. To install the pre-commit hooks, run the following commands:
 
 ```bash
-pip install pre-commit
+poetry install --with dev
 pre-commit install
+```
+
+Or run all the checks manually against all files:
+
+```bash
+poetry run pre-commit run --all-files
 ```
 
 ## Development Roadmap

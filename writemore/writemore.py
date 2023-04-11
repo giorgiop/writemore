@@ -100,11 +100,8 @@ class Scheduler:
 #         context = context_agent(query=self.objective, n=n)
 
 
-def writemore(objective, task, verbose):
-    if verbose:
-        VERBOSE = True
-
-    llm = ChatOpenAI(temperature=0, max_tokens=500, verbose=VERBOSE)
+def writemore(objective, task, verbose: bool = False):
+    llm = ChatOpenAI(temperature=0, max_tokens=500, verbose=verbose)
     # memory = Memory()
     memory = []
     scheduler = Scheduler(objective, task, memory, llm)
