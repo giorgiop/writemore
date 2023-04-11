@@ -12,8 +12,8 @@ writemore = "writemore.cli:run"
 [tool.poetry.dependencies]
 python = "^3.10"
 click = "8.1.3"
-langchain = "0.0.135"
-openai = "0.27.2"
+langchain = "0.0.136"
+openai = "0.27.4"
 tiktoken = "^0.3.3"
 pydantic = "^1.10.7"
 
