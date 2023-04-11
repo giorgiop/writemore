@@ -60,7 +60,7 @@ poetry run pre-commit run --all-files
 
 ToDos
 
-- [ ] Add memory, expose at least one local and one thirt party API
+- [ ] Add memory, expose at least one local and one third party API
 - [ ] Expose all LangChain LLM models available
 - [ ] Add at least 5 template examples
 - [ ] Interactive mode
