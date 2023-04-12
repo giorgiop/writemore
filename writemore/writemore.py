@@ -10,14 +10,13 @@ from writemore.templates import (
     RESCHEDULE_TEMPLATE,
 )
 
-VERBOSE = False
-
 
 class Executor:
-    def __init__(self, objective, memory, llm):
+    def __init__(self, objective, memory, llm, verbose=False):
         self.objective = objective
         # self.memory = memory
         self.llm = llm
+        self.verbose = verbose
 
     def run(self, task):
         """Call LLM to execute the task"""
@@ -28,18 +27,19 @@ class Executor:
             template=EXECUTION_TEMPLATE,
             input_variables=["objective", "task"],
         )
-        self.chain = LLMChain(prompt=prompt, llm=self.llm, verbose=VERBOSE)
+        self.chain = LLMChain(prompt=prompt, llm=self.llm, verbose=self.verbose)
         response = self.chain.run(objective=self.objective, task=task)
         return response
 
 
 class Scheduler:
-    def __init__(self, objective, first_task, memory, llm):
+    def __init__(self, objective, first_task, memory, llm, verbose=False):
         self.objective = objective
         self.memory = memory
         self.llm = llm
         self.task_list = deque([first_task])
         self.output_parser = CommaSeparatedListOutputParser()
+        self.verbose = verbose
 
     def next_task(self):
         return self.task_list.popleft()
@@ -60,7 +60,7 @@ class Scheduler:
                 "n_tasks",
             ],
         )
-        self.chain = LLMChain(prompt=prompt, llm=self.llm, verbose=VERBOSE)
+        self.chain = LLMChain(prompt=prompt, llm=self.llm, verbose=self.verbose)
         response = self.chain.run(
             objective=self.objective,
             result="None",
@@ -79,7 +79,7 @@ class Scheduler:
             template=RESCHEDULE_TEMPLATE,
             input_variables=["objective", "task_list"],
         )
-        self.chain = LLMChain(prompt=prompt, llm=self.llm, verbose=VERBOSE)
+        self.chain = LLMChain(prompt=prompt, llm=self.llm, verbose=self.verbose)
         response = self.chain.run(
             objective=self.objective,
             task_list={", ".join([str(t) for t in self.task_list])},
@@ -100,11 +100,8 @@ class Scheduler:
 #         context = context_agent(query=self.objective, n=n)
 
 
-def writemore(objective, task, verbose):
-    if verbose:
-        VERBOSE = True
-
-    llm = ChatOpenAI(temperature=0, max_tokens=500, verbose=VERBOSE)
+def writemore(objective, task, verbose: bool = False):
+    llm = ChatOpenAI(temperature=0, max_tokens=500, verbose=verbose)
     # memory = Memory()
     memory = []
     scheduler = Scheduler(objective, task, memory, llm)

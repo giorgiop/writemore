@@ -5,49 +5,63 @@ A library of customizable autonomous agents for common jobs.
 
 ## Installation
 
-Make sure you have all the **requirements** above, if not, install/get them.
+`writemore` is a command line application written in Python.
+*The following commands should be executed in a CMD, Bash or Powershell window. 
 
-*The following commands should be executed in a CMD, Bash or Powershell window. To do this, go to a folder on your computer, click in the folder path at the top and type CMD, then press enter.*
+To do this in Microsoft Windows, go to a folder on your computer, click in the folder path at the top and type CMD, then press enter.*
 
-Clone the repository and install the requirements (we recommend using a virtual environment like `conda`):
+Install Python 3.10 or later from [python.org](https://www.python.org/downloads/) if not already installed, then install the `writemore` library using `pip`:
 
 ```bash
-pip install -r requirements.txt
+pip install writemore
 ```
-
-Rename `.env.template` to `.env` and fill in your `OPENAI_API_KEY` from the [OpenAI dashboard](https://platform.openai.com/account/api-keys).
 
 ## Usage
 
-Run the `cli.py` python script in your terminal:
+The library requires the `OPENAI_API_KEY` environment variable to be set. An api key can be obtained from
+the [OpenAI dashboard](https://platform.openai.com/account/api-keys).
+
+To set an environment variable in Windows, run the following command in a CMD or Powershell window:
+
+```
+setx OPENAI_API_KEY "your_api_key_here"
+```
+
+Replace `your_api_key_here` with your actual API key from the OpenAI dashboard!
+
+For macOS or Linux users, you can set the environment variable in the terminal by running:
+
+```bash
+export OPENAI_API_KEY="your_api_key_here"
+```
+
+Run the command line application python script in your terminal:
 *(Type this into your CMD window)*
 
 ```bash
-python cli.py
+python -m writemore.cli
 ```
 
 ## Contributing
 
-Create conda environment and install dev requirements
-
-```bash
-conda create -n writemore python=3.8
-conda activate writemore
-pip install -r requirements-dev.txt
-```
-
 writemore uses `pre-commit` to run code checks and tests before every commit. To install the pre-commit hooks, run the following commands:
 
 ```bash
-pip install pre-commit
+poetry install --with dev
 pre-commit install
+```
+
+Or run all the checks manually against all files:
+
+```bash
+poetry run pre-commit run --all-files
 ```
 
 ## Development Roadmap
 
 ToDos
 
-- [ ] Add memory, expose at least one local and one thirt party API
+- [ ] Add memory, expose at least one local and one third party API
 - [ ] Expose all LangChain LLM models available
 - [ ] Add at least 5 jobs, as for example: conduct market research, write an engaging linkedin, prove a simple theorem
 - [ ] Interactive mode
