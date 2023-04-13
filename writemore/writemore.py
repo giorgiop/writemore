@@ -1,4 +1,5 @@
 from collections import deque
+from typing import Optional
 
 from langchain import LLMChain, PromptTemplate
 from langchain.chat_models import ChatOpenAI
@@ -100,8 +101,8 @@ class Scheduler:
 #         context = context_agent(query=self.objective, n=n)
 
 
-def writemore(objective, task, verbose: bool = False):
-    llm = ChatOpenAI(temperature=0, max_tokens=500, verbose=verbose)
+def writemore(objective, task, model_name: Optional[str] = None, verbose: bool = False):
+    llm = ChatOpenAI(temperature=0, model_name=model_name, max_tokens=500, verbose=verbose)
     # memory = Memory()
     memory = []
     scheduler = Scheduler(objective, task, memory, llm)
